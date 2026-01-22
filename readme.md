@@ -5,7 +5,6 @@ Made by Souradip Biswas
 
 ## Introduction
 This project is for uploading images, detecting document corners, and cropping images. It is made using FastAPI. Images are saved in Cloudinary, and all details are stored in Firebase Firestore. Users can upload, crop, and manage their images easily.
-try it ## https://aiintern.souradipproject.cloud/
 ## Folder Structure
 ```
 readme.md
