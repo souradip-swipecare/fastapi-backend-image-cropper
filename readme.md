@@ -1,10 +1,11 @@
+
 # Image Crop Assignment API
 
-Created by Souradip Biswas
+Made by Souradip Biswas
 
-## Overview
-This project is an image upload, detection, and cropping API built with FastAPI. It integrates Cloudinary for image storage and Firebase Firestore for metadata management. The API allows users to upload images, detect document corners, crop images, and manage their uploads securely.
-
+## Introduction
+This project is for uploading images, detecting document corners, and cropping images. It is made using FastAPI. Images are saved in Cloudinary, and all details are stored in Firebase Firestore. Users can upload, crop, and manage their images easily.
+try it ## https://aiintern.souradipproject.cloud/
 ## Folder Structure
 ```
 readme.md
@@ -50,16 +51,27 @@ app/
 uploads/
     cropped/
     previews/
-testingimages/
+
 ```
 
-## Workflow
-1. **User Authentication**: Users authenticate using Firebase. Each upload is linked to a user.
-2. **Image Upload**: Users upload images via the `/uploads/detect` endpoint. Images are stored in Cloudinary, and metadata is saved in Firestore.
-3. **Detection**: The API detects document corners in the uploaded image and returns the detected points and preview URLs.
-4. **Cropping**: Users can submit their own crop points via `/uploads/crop`. The API crops the image and saves the result.
-5. **Listing Uploads**: Users can list their uploads using `/uploads/list`.
-6. **Delete Uploads**: Users can soft-delete uploads using `/uploads/delete`.
+## How to Setup
+1. First, install all requirements using:
+   ```
+   pip install -r requirements.txt
+   ```
+2. Make one `.env` file and put your Cloudinary and Firebase details inside.
+3. To start the API, run:
+   ```
+   uvicorn app.main:app --reload
+   ```
+
+## How it Works
+1. **Login**: User will login using Firebase. Every upload is linked to the user.
+2. **Upload Image**: User uploads image using `/uploads/detect` endpoint. Image goes to Cloudinary, and details go to Firestore.
+3. **Detect Corners**: API will find document corners in the image and give you the points and preview image link.
+4. **Crop Image**: User can send their own crop points using `/uploads/crop`. API will crop and save the new image.
+5. **List Uploads**: User can see all their uploads using `/uploads/list`.
+6. **Delete Uploads**: User can delete their uploads using `/uploads/delete`. It is a soft delete, so data is not lost.
 
 ## Technologies Used
 - FastAPI
@@ -67,12 +79,7 @@ testingimages/
 - Firebase Admin SDK
 - Firestore
 - OpenCV
-- Python-dotenv
-
-## How to Run
-1. Install dependencies: `pip install -r requirements.txt`
-2. Set up environment variables in a `.env` file (Cloudinary, Firebase credentials).
-3. Start the API: `uvicorn app.main:app --reload`
+- python-dotenv
 
 ## Author
 Souradip Biswas
