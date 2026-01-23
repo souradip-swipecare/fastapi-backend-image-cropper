@@ -8,38 +8,54 @@
 
 ## How to Run
 
-### Step 1: Install everything
+### Step 1: Create a virtual environment
+```bash
+python3 -m venv venv
+```
+
+### Step 2: Activate the virtual environment
+```bash
+source venv/bin/activate
+```
+
+### Step 3: Install all dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 2: Create a `.env` file
-Add your Cloudinary and Firebase credentials in a `.env` file.
+### Step 4: Create a `.env` file
+Create a `.env` file in the root folder with your credentials:
 
-### Step 3: Start the server
+```env
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_PRIVATE_KEY_ID=your_private_key_id
+FIREBASE_PRIVATE_KEY=your_private_key
+FIREBASE_CLIENT_ID=your_client_id
+FIREBASE_CLIENT_EMAIL=your_client_email
+FIREBASE_AUTH_URI=https://accounts.google.com/o/oauth2/auth
+FIREBASE_TOKEN_URI=https://oauth2.googleapis.com/token
+FIREBASE_AUTH_PROVIDER_CERT_URL=https://www.googleapis.com/oauth2/v1/certs
+FIREBASE_CLIENT_CERT_URL=your_client_cert_url
+FIREBASE_UNIVERSE_DOMAIN=googleapis.com
+```
+
+### Step 5: Start the server
 ```bash
 uvicorn app.main:app --reload
 ```
 
 The API will be running at `http://localhost:8000`
 
+### To deactivate the virtual environment (when done)
+```bash
+deactivate
+```
+
 ---
-FIREBASE_PRIVATE_KEY=tgtgtgtgtgtg
-CLOUDINARY_CLOUD_NAME=duc3fqy3w
-CLOUDINARY_API_KEY=372224185676761
-CLOUDINARY_API_SECRET=MHxKdLrg5Ou7szikaElADE3G-n4
-
-
-FIREBASE_PROJECT_ID=
-FIREBASE_PRIVATE_KEY_ID=
- FIREBASE_PRIVATE_KEY=
-FIREBASE_CLIENT_ID=
-FIREBASE_AUTH_URI=
-FIREBASE_TOKEN_URI=
-FIREBASE_AUTH_PROVIDER_CERT_URL=
-FIREBASE_CLIENT_CERT_URL=
-FIREBASE_UNIVERSE_DOMAIN=
-FIREBASE_CLIENT_EMAIL=
 ## Authentication
 
 **All APIs require a Firebase token.**
