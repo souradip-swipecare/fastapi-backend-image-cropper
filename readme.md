@@ -1,10 +1,107 @@
 # Image Crop Assignment API
 
 **Made by Souradip Biswas**
+Access => https://backend.souradipproject.cloud/docs#/
+---
+
+## Folder Structure
+
+```
+imagecropassignment/
+├── readme.md                    # This file
+├── requirements.txt             # Python dependencies
+├── .env                         # Environment variables (create this)
+│
+├── app/
+│   ├── main.py                  # FastAPI app entry point
+│   │
+│   ├── api/
+│   │   └── v1/
+│   │       ├── api.py           # API router
+│   │       └── endpoints/
+│   │           ├── auth.py      # Authentication endpoints
+│   │           ├── gallery.py   # Gallery endpoints
+│   │           └── upload.py    # Upload, detect, crop endpoints
+│   │
+│   ├── core/
+│   │   ├── config.py            # App configuration
+│   │   └── sequrity.py          # Security/auth helpers
+│   │
+│   ├── schemas/
+│   │   └── upload.py            # Pydantic schemas
+│   │
+│   ├── services/
+│   │   ├── upload_service.py    # Upload business logic
+│   │   │
+│   │   ├── cloud_storage/
+│   │   │   └── uploader.py      # Cloudinary upload
+│   │   │
+│   │   ├── cv/                  # Computer Vision (OpenCV)
+│   │   │   ├── scanner.py       # Main document scanner
+│   │   │   ├── detector.py      # Detection algorithms
+│   │   │   ├── warp.py          # Perspective transform
+│   │   │   ├── transform.py     # Image transformations
+│   │   │   ├── perspective.py   # Corner ordering
+│   │   │   ├── preprocess.py    # Image preprocessing
+│   │   │   ├── preview.py       # Preview generation
+│   │   │   └── confidence.py    # Confidence scoring
+│   │   │
+│   │   ├── firebase/
+│   │   │   ├── firestore.py     # Firestore database
+│   │   │   └── storage.py       # Firebase storage
+│   │   │
+│   │   └── pdf/
+│   │       └── convert.py       # PDF conversion
+│   │
+│   └── utils/
+│       ├── image.py             # Image utilities
+│       └── setting.py           # Settings helpers
+│
+├── uploads/                     # Local upload storage
+│   └── cropped/                 # Cropped images
+│
+└── testingimages/               # Test images
+```
 
 ---
 
+## How Detection Works
 
+When you upload an image, the system automatically tries to find the document edges. Here's what happens behind the scenes:
+
+### Step 1: Check if it's a scanned document
+First, the system checks if the image has a **white background** (like a scanned document or screenshot). If all corners are very bright (>240), it assumes the whole image is the document.
+
+### Step 2: Try multiple detection methods
+If it's not a white background, the system tries **3 different methods** to find the document:
+
+| Method | How it works |
+|--------|--------------|
+| **Edge Detection** | Uses Canny edge detection to find sharp edges. Tries multiple thresholds (50-150, 30-100, 75-200) to find the best result. |
+| **Contour Detection** | Uses morphological operations (gradient + closing) to find document boundaries. Good for documents with clear borders. |
+| **Threshold Detection** | Uses adaptive thresholding to separate document from background. Works well when lighting is uneven. |
+
+### Step 3: Score and pick the best result
+Each detected quadrilateral (4-sided shape) gets a **confidence score** based on:
+- Size relative to the image
+- How rectangular it looks
+- Whether it looks like paper (low saturation)
+
+The method with the **highest score** wins.
+
+### Step 4: Order the corners
+The 4 corner points are ordered as: **Top-Left → Top-Right → Bottom-Right → Bottom-Left**
+
+This ensures the crop always comes out correctly oriented.
+
+### Confidence Levels
+| Confidence | Meaning |
+|------------|---------|
+| **0.7 - 1.0** | Good detection, ready to crop |
+| **0.4 - 0.7** | Moderate detection, may need manual adjustment |
+| **< 0.4** | Poor detection, manual corner selection recommended |
+
+---
 
 ## How to Run
 
